@@ -164,7 +164,7 @@ No container orchestration required.
 
 ### Menu Display
 
-![Menu](docs/screenshots/menu.lpg)
+![Menu](docs/screenshots/menu.jpg)
 
 ---
 
