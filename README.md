@@ -174,7 +174,6 @@ Example signage screen:
 
 ![Display Demo](docs/screenshots/display-demo.gif)
 
-*(Replace with a screen recording GIF once available.)*
 
 ---
 
