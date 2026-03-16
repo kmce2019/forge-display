@@ -1,52 +1,29 @@
-# IdleScreens Pro v1.6
+# Forge Display
 
-This build includes:
+**Forge Display** is a **self-hosted digital signage platform** designed for schools, churches, gyms, coffee shops, and small businesses.
 
-- sqlite3-backed storage instead of better-sqlite3
-- startup via systemd service
-- one-command installer
-- live screen previews
-- scheduled playlists by time of day
-- separate Menus and Announcements admin pages
-- crawler speed controls
-- breakfast and lunch menu support
-- PDF, image, and video assets
-- per-screen themes and playlist assignment
+It allows you to control multiple screens from a central web dashboard and display dynamic content like weather, announcements, menus, calendars, videos, and RSS feeds.
 
-## Fast install on Ubuntu/Debian
+Forge Display is designed to be **simple to deploy, easy to manage, and affordable to run**.
 
-1. Extract the zip.
-2. Run:
+---
 
-```bash
-cd idlescreens-pro-mvp
-sudo bash install.sh
-```
+# Features
 
-Then open:
+## Central CMS
 
-```text
-http://SERVER-IP:3010/admin
-```
+Manage all screens from a single web interface.
 
-## Manual dev run
+## Multi-Screen Support
 
-```bash
-npm install
-PORT=3010 npm start
-```
+Control TVs, browsers, or Raspberry Pi displays across your building or campus.
 
-## Service commands
+## Live Screen Preview
 
-```bash
-sudo systemctl status idlescreens-pro
-sudo journalctl -u idlescreens-pro -f
-sudo systemctl restart idlescreens-pro
-```
+See a live thumbnail of what each screen is displaying.
 
-## Notes
+## Scheduled Playlists
 
-- Default app port is `3010`
-- Uploaded assets live in `uploads/`
-- SQLite database lives in `data/idlescreens.db`
-- Branding, schedules, menus, announcements, and playlists are stored in SQLite
+Automatically switch playlists based on time of day.
+
+Example:
