@@ -156,15 +156,15 @@ No container orchestration required.
 
 ### Playlist Editor
 
-![Playlist](docs/screenshots/playlist-editor.png)
+![Playlist](docs/screenshots/playlist.png)
 
 ### Weather Widget
 
-![Weather](docs/screenshots/weather-widget.png)
+![Weather](docs/screenshots/weatherpng)
 
 ### Menu Display
 
-![Menu](docs/screenshots/menu-display.png)
+![Menu](docs/screenshots/menu.png)
 
 ---
 
