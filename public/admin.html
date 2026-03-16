@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IdleScreens Pro Admin</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container admin-shell">
+    <div class="hero-card">
+      <div>
+        <div class="eyebrow">Forge Display / IdleScreens Pro</div>
+        <div class="title">Digital signage, without the clutter</div>
+        <div class="subtitle">Manage screens, menus, logos, videos, alerts, and playlists from one cleaner dashboard.</div>
+      </div>
+      <div class="row">
+        <button class="secondary" onclick="loadData()">Refresh</button>
+      </div>
+    </div>
+
+    <div class="grid grid-4 metric-grid" style="margin-bottom:16px">
+      <div class="card metric-card"><div class="metric" id="metricScreens">0</div><div class="metric-label">Screens</div></div>
+      <div class="card metric-card"><div class="metric" id="metricOnline">0</div><div class="metric-label">Online</div></div>
+      <div class="card metric-card"><div class="metric" id="metricPlaylists">0</div><div class="metric-label">Playlists</div></div>
+      <div class="card metric-card"><div class="metric" id="metricAssets">0</div><div class="metric-label">Media Files</div></div>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="overview" onclick="showTab('overview')">Overview</button>
+      <button class="tab-btn" data-tab="branding" onclick="showTab('branding')">Branding</button>
+      <button class="tab-btn" data-tab="media" onclick="showTab('media')">Media</button>
+      <button class="tab-btn" data-tab="playlists" onclick="showTab('playlists')">Playlists</button>
+      <button class="tab-btn" data-tab="menus" onclick="showTab('menus')">Menus</button>
+      <button class="tab-btn" data-tab="announcements" onclick="showTab('announcements')">Announcements</button>
+      <button class="tab-btn" data-tab="screenTheme" onclick="showTab('screenTheme')">Per-Screen Style</button>
+    </div>
+
+    <section class="tab-section active" data-tab-panel="overview">
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h2>Screens</h2>
+              <div class="help">Add screens, assign a default playlist, add a daily schedule, and use the built-in live preview.</div>
+            </div>
+            <span class="pill">Live status</span>
+          </div>
+          <div id="screensTable"></div>
+          <hr class="soft-hr" />
+          <div class="quick-form-grid">
+            <div><label>Screen Link Name</label><input id="newScreenSlug" placeholder="front-office" /></div>
+            <div><label>Friendly Screen Name</label><input id="newScreenName" placeholder="Front Office TV" /></div>
+            <div><label>Location</label><input id="newScreenLocation" placeholder="Main Office" /></div>
+            <div><label>Starting Playlist</label><select id="newScreenPlaylist"></select></div>
+          </div>
+          <div style="margin-top: 12px"><button onclick="createScreen()">Add Screen</button></div>
+        </div>
+
+        <div class="stack gap-16">
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h2>Emergency Override</h2>
+                <div class="help">Push a full-screen message to every display instantly.</div>
+              </div>
+              <span class="pill warning">Priority</span>
+            </div>
+            <div class="stack">
+              <div><label>Alert Title</label><input id="emergencyTitle" placeholder="LOCKDOWN" /></div>
+              <div><label>Alert Message</label><textarea id="emergencyMessage" placeholder="Secure classrooms immediately."></textarea></div>
+              <div class="row wrap-row">
+                <button onclick="saveEmergency(true)">Activate Override</button>
+                <button class="danger" onclick="saveEmergency(false)">Clear Override</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h2>Quick Start</h2>
+                <div class="help">A simple flow for a new screen setup.</div>
+              </div>
+            </div>
+            <div class="checklist">
+              <div>1. Upload a logo, menu PDF, image, or video under <strong>Media</strong>.</div>
+              <div>2. Set colors and slogan under <strong>Branding</strong>.</div>
+              <div>3. Build a playlist under <strong>Playlists</strong> with the visual slide builder.</div>
+              <div>4. Assign that playlist to a screen here in <strong>Overview</strong>.</div>
+              <div>5. Open <code>/display/your-screen-name</code> on the TV or Raspberry Pi.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-section" data-tab-panel="branding">
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h2>Branding & Theme</h2>
+              <div class="help">These become the default look for every screen.</div>
+            </div>
+          </div>
+          <div class="quick-form-grid">
+            <div><label>School / Organization Name</label><input id="brandSchoolName" placeholder="Grapeland ISD" /></div>
+            <div><label>Slogan</label><input id="brandSlogan" placeholder="Home of the Sandies and Sandiettes" /></div>
+            <div><label>Background Color</label><input id="brandBackgroundColor" type="color" /></div>
+            <div><label>Accent Color</label><input id="brandAccentColor" type="color" /></div>
+            <div><label>Panel Color</label><input id="brandPanelColor" type="color" /></div>
+            <div><label>Text Color</label><input id="brandTextColor" type="color" /></div>
+            <div class="grid-span-2">
+              <label>Logo URL</label>
+              <div class="row stretch-row wrap-row">
+                <input id="brandLogoUrl" placeholder="/uploads/your-logo.png" />
+                <button class="secondary" onclick="setLogoFromLatest()">Use Latest Logo</button>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 12px" class="row">
+            <button onclick="saveBranding()">Save Branding</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h2>Theme Preview Tips</h2>
+              <div class="help">Make signage easier to read from across a room.</div>
+            </div>
+          </div>
+          <div class="checklist">
+            <div>Use a dark background with bright text for hallways and cafeterias.</div>
+            <div>Keep accent colors bold for alerts and menu highlights.</div>
+            <div>Use square PNG logos when possible for the cleanest top bar.</div>
+            <div>Short slogans work better than long mission statements on TVs.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-section" data-tab-panel="media">
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h2>Media Uploads</h2>
+              <div class="help">Upload logos, breakfast/lunch PDFs, images, and video loops.</div>
+            </div>
+          </div>
+          <div class="quick-form-grid">
+            <div>
+              <label>Media Type</label>
+              <select id="assetKind">
+                <option value="logo">Logo</option>
+                <option value="pdf">PDF</option>
+                <option value="video">Video</option>
+                <option value="image">Image</option>
+                <option value="file">File</option>
+              </select>
+            </div>
+            <div>
+              <label>Select File</label>
+              <input id="assetFile" type="file" />
+            </div>
+          </div>
+          <div style="margin-top:12px" class="row">
+            <button onclick="uploadAsset()">Upload Media</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h2>Menu Ideas</h2>
+              <div class="help">Best options for breakfast and lunch slides.</div>
+            </div>
+          </div>
+          <div class="checklist">
+            <div><strong>Best:</strong> use the dedicated Breakfast and Lunch widgets for readable text.</div>
+            <div><strong>Also good:</strong> upload a landscape PDF if your district already publishes menus that way.</div>
+            <div><strong>For promos:</strong> use MP4 videos or JPG/PNG graphics.</div>
+            <div><strong>Tip:</strong> PDFs now render in a larger frame so the page fills more of the screen.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="section-head">
+          <div>
+            <h2>Uploaded Media</h2>
+            <div class="help">Copy a file URL and drop it into a widget.</div>
+          </div>
+        </div>
+        <div id="assetsList" style="margin-top:14px"></div>
+      </div>
+    </section>
+
+    <section class="tab-section" data-tab-panel="playlists">
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <h2>Playlists</h2>
+            <div class="help">Drag cards to reorder. Use quick-add buttons or the visual slide builder below. No raw JSON required.</div>
+          </div>
+          <span class="pill">Drag & drop</span>
+        </div>
+        <div class="row wrap-row" style="margin-bottom: 12px">
+          <select id="playlistSelect" onchange="selectPlaylist()"></select>
+          <button class="secondary" onclick="newPlaylist()">New Playlist</button>
+        </div>
+        <div class="grid grid-2"><div><label>Playlist Name</label><input id="playlistName" /></div></div>
+        <div class="quick-actions" style="margin-top: 14px">
+          <button onclick="addPlaylistItem()">Add Widget</button>
+          <button class="secondary" onclick="addPreset('weather')">Weather</button>
+          <button class="secondary" onclick="addPreset('breakfast')">Breakfast Menu</button>
+          <button class="secondary" onclick="addPreset('lunch')">Lunch Menu</button>
+          <button class="secondary" onclick="addPreset('announcements')">Announcements</button>
+          <button class="secondary" onclick="addPreset('video')">Video</button>
+          <button class="secondary" onclick="addPreset('image')">Image</button>
+          <button class="secondary" onclick="addPreset('pdf')">PDF</button>
+        </div>
+        <div id="playlistItems" class="playlist-dropzone" style="margin-top: 16px"></div>
+        <div class="row"><button onclick="savePlaylist()">Save Playlist</button></div>
+      </div>
+    </section>
+
+    
+    <section class="tab-section" data-tab-panel="menus">
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <h2>Menus</h2>
+            <div class="help">Edit breakfast and lunch slides from one dedicated page.</div>
+          </div>
+          <span class="pill">Cafeteria friendly</span>
+        </div>
+        <div id="menusEditor"></div>
+      </div>
+    </section>
+
+    <section class="tab-section" data-tab-panel="announcements">
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <h2>Announcements & Crawlers</h2>
+            <div class="help">Manage announcement slides and slow down or speed up scrolling text without hunting through playlists.</div>
+          </div>
+          <span class="pill">Ticker control</span>
+        </div>
+        <div id="announcementsEditor"></div>
+      </div>
+    </section>
+
+    <section class="tab-section" data-tab-panel="screenTheme">
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <h2>Per-Screen Theme Override</h2>
+            <div class="help">Keep one global brand, but optionally give a cafeteria, gym, or lobby its own colors and logo.</div>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:12px">
+          <select id="screenThemeSelect" onchange="selectThemeScreen()"></select>
+        </div>
+        <div class="quick-form-grid">
+          <div><label>Override School / Org Name</label><input id="themeSchoolName" placeholder="Optional" /></div>
+          <div><label>Override Slogan</label><input id="themeSlogan" placeholder="Optional" /></div>
+          <div><label>Background Color</label><input id="themeBackgroundColor" type="color" /></div>
+          <div><label>Accent Color</label><input id="themeAccentColor" type="color" /></div>
+          <div><label>Panel Color</label><input id="themePanelColor" type="color" /></div>
+          <div><label>Text Color</label><input id="themeTextColor" type="color" /></div>
+          <div class="grid-span-2"><label>Override Logo URL</label><input id="themeLogoUrl" placeholder="Optional /uploads/logo.png" /></div>
+        </div>
+        <div class="row wrap-row" style="margin-top:12px">
+          <button onclick="saveScreenTheme()">Save Screen Theme</button>
+          <button class="secondary" onclick="clearScreenTheme()">Clear Theme Override</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/admin.js"></script>
+</body>
+</html>
