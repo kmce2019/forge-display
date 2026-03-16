@@ -160,7 +160,7 @@ No container orchestration required.
 
 ### Weather Widget
 
-![Weather](docs/screenshots/weatherpng)
+![Weather](docs/screenshots/weather.png)
 
 ### Menu Display
 
